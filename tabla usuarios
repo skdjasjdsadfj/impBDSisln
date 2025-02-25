@@ -1,0 +1,270 @@
+Lectura de información de la tabla para completar los nombres de tablas y columnas
+Puede desactivar esta función para obtener un inicio más rápido con -A
+Bienvenido al monitor MySQL. Los comandos terminan con ; o \g.
+Su ID de conexión MySQL es 10020374
+Versión del servidor: 8.0.40 Distribución de origen
+Copyright (c) 2000, 2022, Oracle y/o sus filiales.
+Oracle es una marca registrada de Oracle Corporation y/o sus
+afiliados. Otros nombres pueden ser marcas comerciales de sus respectivos
+propietarios.
+Escriba 'help;' o '\h' para obtener ayuda. Escriba '\c' para borrar la declaración de entrada actual.
+mysql> uso
+Database changed
+mysql> show TABLES;
++---------------------------------+
+| Tables_in_R0s1t4Fres1t4$default |
++---------------------------------+
+| detalle_horario                 |
+| gamescores                      |
+| hockeygame                      |
+| hockeyteam                      |
+| hockeyteamplayer                |
+| horario                         |
+| plantilla_detalle_horario       |
+| playoffround                    |
+| roundstats                      |
+| user                            |
+| userinfo                        |
+| userscorepicks                  |
+| userstatspicks                  |
++---------------------------------+
+13 rows in set (0.00 sec)
+mysql> CREATE TABLE usuarios (
+    -> nombre varchar(225) NOT NULL,
+    -> apellido varchar(255) NOT NULL,
+    -> departamento varchar (255) NOT NULL,
+    -> PRIMARY KEY (nombre, apellido)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT into usuarios (nombre, apellido, departamento)
+    -> values ('Ximena', 'Lopez', 'cbtis-246');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT into usuarios (nombre, apellido, departamento)
+    -> values ('Ian', 'Rojas', 'cbtis-246');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> valores ('Kimberly', 'Morales', 'cbtis-246');
+Consulta correcta, 1 fila afectada (0,01 s)
+
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> valores ('Abigail', 'Huerta', 'cbtis-246');
+Consulta correcta, 1 fila afectada (0,01 s)
+
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> valores ('Aridni', 'Yañez', 'cbtis-246');
+Consulta correcta, 1 fila afectada (0,00 segundos)
+
+>mysql>
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> valores('Karen', 'Paz', 'cbtis-246');
+Consulta correcta, 1 fila afectada (0,00 segundos)
+
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> valores ('Alexis', 'Estrada', 'cbtis-246');
+Consulta correcta, 1 fila afectada (0,00 segundos)
+
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> valores ('Jesús', 'Quetzal', 'cbtis-246');
+Consulta correcta, 1 fila afectada (0,01 s)
+
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> valores ('Pinky', 'Pie', 'cbtis-246');
+Consulta correcta, 1 fila afectada (0,01 s)
+
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+valores ('Crepúsculo', 'Brillo', 'cbtis-246');
+INSERTAR en usuarios (nombre, apellido, departamento)
+^C
+mysql> valores ('Crepúsculo', 'Brillo', 'cbtis-246');
+ERROR 1064 (42000): Tiene un error en su sintaxis SQL; consulte el manual correspondiente a la versión de su servidor MySQL para conocer la sintaxis correcta a utilizar cerca de '('Crepúsculo', 'Brillo', 'cbtis-246')' en la línea 1
+mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> valores ('Crepúsculo', 'Brillo', 'cbtis-246');
+Consulta correcta, 1 fila afectada (0,00 segundos)
+
+>mysql>
+mysql> SELECCIONAR * de
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELET * from usuarios' at line 1
+mysql> SELECT * from usuarios;
++----------+----------+--------------+
+| nombre   | apellido | departamento |
++----------+----------+--------------+
+| Abigail  | Huerta   | cbtis-246    |
+| Alexis   | Estrada  | cbtis-246    |
+| Aridni   | Yañez    | cbtis-246    |
+| Ian      | Rojas    | cbtis-246    |
+| Jesús    | Quetzal  | cbtis-246    |
+| Karen    | Paz      | cbtis-246    |
+| Kimberly | Morales  | cbtis-246    |
+| Pinky    | Pie      | cbtis-246    |
+| Twilight | Sparkle  | cbtis-246    |
+| Ximena   | Lopez    | cbtis-246    |
++----------+----------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> ALTER TABLE usuario
+    -> 
+    -> mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> 
+    ->     -> valores ('Jesús', 'Quetzal', 'cbtis-246');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+
+    -> valores ('Je' at line 3
+mysql> 
+mysql> Consulta correcta, 1 fila afectada (0,01 s)
+    -> 
+    -> mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> 
+    ->     -> valores ('Pinky', 'Pie', 'cbtis-246');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Consulta correcta, 1 fila afectada (0,01 s)
+
+mysql>INSERTAR en usuarios (nombre,' at line 1
+mysql> 
+mysql> Consulta correcta, 1 fila afectada (0,01 s)
+    -> 
+    -> mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> 
+    -> valores ('Crepúsculo', 'Brillo', 'cbtis-246');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Consulta correcta, 1 fila afectada (0,01 s)
+
+mysql>INSERTAR en usuarios (nombre,' at line 1
+mysql> 
+mysql> INSERTAR en usuarios (nombre, apellido, departamento)
+    -> 
+    -> ^C
+    -> 
+    -> mysql> valores ('Crepúsculo', 'Brillo', 'cbtis-246');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSERTAR en usuarios (nombre, apellido, departamento)
+
+^C
+
+mysql> valores ('Crep' at line 1
+mysql> 
+mysql> ERROR 1064 (42000): Tiene un error en su sintaxis SQL; consulte el manual correspondiente a la versión de su servidor MySQL para conocer la sintaxis correcta a utilizar cerca de '(
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ERROR 1064 (42000): Tiene un error en su sintaxis SQL' at line 1
+    '> 
+    '> 'Crepúsculo', 'Brillo', 'cbtis-246')' en la línea 1
+    -> 
+    -> mysql>INSERTAR en usuarios (nombre, apellido, departamento)
+    -> 
+    ->     -> valores ('Crepúsculo', 'Brillo', 'cbtis-246');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'consulte el manual correspondiente a la versión de su servidor MySQL para conoc' at line 1
+mysql> 
+mysql> Consulta correcta, 1 fila afectada (0,00 segundos)
+    -> 
+    -> >mysql>
+    -> 
+    -> mysql> SELECCIONAR * de
+    -> 
+    -> ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'S
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Consulta correcta, 1 fila afectada (0,00 segundos)
+
+>mysql>
+
+mysql> SELECCIONAR ' at line 1
+    '> 
+    '> ELET * from usuarios' at line 1
+    -> 
+    -> mysql> SELECT * from usuarios;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'the manual that corresponds to your MySQL server version for the right syntax to' at line 1
+mysql> 
+mysql> +----------+----------+--------------+
+    -> 
+    -> | nombre   | apellido | departamento |
+    -> 
+    -> +----------+----------+--------------+
+    -> 
+    -> | Abigail  | Huerta   | cbtis-246    |
+    -> 
+    -> | Alexis   | Estrada  | cbtis-246    |
+    -> 
+    -> | Aridni   | Yañez    | cbtis-246    |
+    -> 
+    -> | Ian      | Rojas    | cbtis-246    |
+    -> 
+    -> | Jesús    | Quetzal  | cbtis-246    |
+    -> 
+    -> | Karen    | Paz      | cbtis-246    |
+    -> 
+    -> | Kimberly | Morales  | cbtis-246    |
+    -> 
+    -> | Pinky    | Pie      | cbtis-246    |
+    -> 
+    -> | Twilight | Sparkle  | cbtis-246    |
+    -> 
+    -> | Ximena   | Lopez    | cbtis-246    |
+    -> 
+    -> +----------+----------+--------------+
+    -> 
+    -> 10 rows in set (0.00 sec)
+    -> 
+    -> mysql> ^Z
+
+    -> 
+    -> mysql> ALTER TABLE usuarios
+    -> AGREGAR idx int (15) NO NULL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+----------+----------+--------------+
+
+| nombre   | apellido | departamento |
+
+' at line 1
+mysql> 
+mysql> ALTER TABLE usuario
+    -> ADD idx int (15) NO NULL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NO NULL' at line 2
+mysql> 
+mysql> ALTER TABLE usuario ADD idx int (15) NO NULL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NO NULL' at line 1
+mysql> ALTER TABLE usuario ADD idx int (15) NOT NULL;
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$default.usuario' doesn't exist
+mysql> ALTER TABLE usuarios ADD idx int (15) NOT NULL;
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> UPDATE usuario set idx= 1 donde nombre = 'Abigail';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'donde nombre = 'Abigail'' at line 1
+mysql> UPDATE usuario set idx= 1 where nombre = 'Abigail';
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$default.usuario' doesn't exist
+mysql> UPDATE usuarios set idx= 1 donde nombre = 'Abigail';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'donde nombre = 'Abigail'' at line 1
+mysql> UPDATE usuarios set idx= 1 where nombre = 'Abigail';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 2 where nombre = 'Alexis';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 3 where nombre = 'Aridni';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 4 where nombre = 'Ian';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 5 where nombre = ' Jesús';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 6 where nombre = ' Karen';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 7 where nombre = ' Kimberly';
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 8 where nombre = 'Pinky';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 9 where nombre = 'Twilight';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE usuarios set idx= 10 where nombre = 'Ximena';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
