@@ -1,0 +1,363 @@
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11422025
+Server version: 8.0.40 Source distribution
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show TABLE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> show TABLES;
++---------------------------------+
+| Tables_in_R0s1t4Fres1t4$default |
++---------------------------------+
+| detalle_horario                 |
+| gamescores                      |
+| hockeygame                      |
+| hockeyteam                      |
+| hockeyteamplayer                |
+| horario                         |
+| plantilla_detalle_horario       |
+| playoffround                    |
+| roundstats                      |
+| user                            |
+| userinfo                        |
+| userscorepicks                  |
+| userstatspicks                  |
+| usuarios                        |
++---------------------------------+
+14 rows in set (0.01 sec)
+
+mysql> INSERT into playoffround (id,team1id,team2id,startTime, endTime,roundNum)
+    -> values (1,1,2,'2025/02/15 13:00:00','2025/02/15 15:00:00',3 );
+ERROR 1054 (42S22): Unknown column 'team1id' in 'field list'
+mysql> DSCE playoffround;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DSCE playoffround' at line 1
+mysql> DESC playoffround;
++-----------+-----------+------+-----+---------+-------+
+| Field     | Type      | Null | Key | Default | Extra |
++-----------+-----------+------+-----+---------+-------+
+| id        | int       | NO   | PRI | NULL    |       |
+| teamid1   | int       | NO   |     | NULL    |       |
+| teamid2   | int       | NO   |     | NULL    |       |
+| startTime | timestamp | NO   | PRI | NULL    |       |
+| endTime   | date      | NO   |     | NULL    |       |
+| roundNum  | int       | NO   |     | NULL    |       |
++-----------+-----------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> INSERT into playoffround (id,teamid1,teamid2,startTime, endTime,roundNum)
+    -> values (1,2,2,'2025/02/15 13:00:00','2025/02/15 15:00:00',3 );
+Query OK, 1 row affected, 3 warnings (0.01 sec)
+
+mysql> INSERT into HockeyGame (id, roundId, startTime, endTime, description, teamId1, teamId2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 2, 2);
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$default.HockeyGame' doesn't exist
+mysql> DESC  HockeyGame;
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$default.HockeyGame' doesn't exist
+mysql> DESC hockeygame;
++-------------+------+------+-----+---------+-------+
+| Field       | Type | Null | Key | Default | Extra |
++-------------+------+------+-----+---------+-------+
+| id          | int  | NO   | PRI | NULL    |       |
+| roundid     | int  | NO   |     | NULL    |       |
+| description | text | YES  |     | NULL    |       |
+| startTime   | date | NO   |     | NULL    |       |
+| teamid1     | int  | NO   |     | NULL    |       |
+| teamid2     | int  | NO   |     | NULL    |       |
++-------------+------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT into hockeyGame (id, roundId, startTime, endTime, description, teamId1, teamId2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 2, 2);
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$default.hockeyGame' doesn't exist
+mysql> 
+mysql> INSERT into hockeygame (id, roundid, startTime, description, teamid1, teamid2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 2, 1);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> 
+mysql> INSERT into hockeygame (id, roundid, startTime, description, teamid1, teamid2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 1, 2);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11422025
+Server version: 8.0.40 Source distribution
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show TABLE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> show TABLES;
++---------------------------------+
+| Tables_in_R0s1t4Fres1t4$default |
++---------------------------------+
+| detalle_horario                 |
+| gamescores                      |
+| hockeygame                      |
+| hockeyteam                      |
+| hockeyteamplayer                |
+| horario                         |
+| plantilla_detalle_horario       |
+| playoffround                    |
+| roundstats                      |
+| user                            |
+| userinfo                        |
+| userscorepicks                  |
+| userstatspicks                  |
+| usuarios                        |
++---------------------------------+
+14 rows in set (0.01 sec)
+
+mysql> INSERT into playoffround (id,team1id,team2id,startTime, endTime,roundNum)
+    -> values (1,1,2,'2025/02/15 13:00:00','2025/02/15 15:00:00',3 );
+ERROR 1054 (42S22): Unknown column 'team1id' in 'field list'
+mysql> DSCE playoffround;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DSCE playoffround' at line 1
+mysql> DESC playoffround;
++-----------+-----------+------+-----+---------+-------+
+| Field     | Type      | Null | Key | Default | Extra |
++-----------+-----------+------+-----+---------+-------+
+| id        | int       | NO   | PRI | NULL    |       |
+| teamid1   | int       | NO   |     | NULL    |       |
+| teamid2   | int       | NO   |     | NULL    |       |
+| startTime | timestamp | NO   | PRI | NULL    |       |
+| endTime   | date      | NO   |     | NULL    |       |
+| roundNum  | int       | NO   |     | NULL    |       |
++-----------+-----------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> INSERT into playoffround (id,teamid1,teamid2,startTime, endTime,roundNum)
+    -> values (1,2,2,'2025/02/15 13:00:00','2025/02/15 15:00:00',3 );
+Query OK, 1 row affected, 3 warnings (0.01 sec)
+
+mysql> INSERT into HockeyGame (id, roundId, startTime, endTime, description, teamId1, teamId2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 2, 2);
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$default.HockeyGame' doesn't exist
+mysql> DESC  HockeyGame;
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$default.HockeyGame' doesn't exist
+mysql> DESC hockeygame;
++-------------+------+------+-----+---------+-------+
+| Field       | Type | Null | Key | Default | Extra |
++-------------+------+------+-----+---------+-------+
+| id          | int  | NO   | PRI | NULL    |       |
+| roundid     | int  | NO   |     | NULL    |       |
+| description | text | YES  |     | NULL    |       |
+| startTime   | date | NO   |     | NULL    |       |
+| teamid1     | int  | NO   |     | NULL    |       |
+| teamid2     | int  | NO   |     | NULL    |       |
++-------------+------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT into hockeyGame (id, roundId, startTime, endTime, description, teamId1, teamId2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 2, 2);
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$default.hockeyGame' doesn't exist
+mysql> 
+mysql> INSERT into hockeygame (id, roundid, startTime, description, teamid1, teamid2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 2, 1);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> 
+mysql> INSERT into hockeygame (id, roundid, startTime, description, teamid1, teamid2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 1, 2);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT into hockeygame (id, roundid, endTime, startTime, description, teamid1, teamid2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 1, 2);
+ERROR 1054 (42S22): Unknown column 'endTime' in 'field list'
+mysql> 
+mysql> INSERT into hockeygame (id, roundid, description,  StartTime, teamid1, teamid2)
+    -> values (1, 1, '2025-02-15 16:30', '2025-02-15 18:30', 'Quarterfinals', 1, 2);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> 
+mysql> INSERT into hockeygame (id, roundid, description,  startTime, teamid1, teamid2)
+    -> values (1, 1, 'Quarterfinals','2025-02-15 18:30', 1, 2);
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+mysql> DESC gamescores; 
++------------+------+------+-----+---------+-------+
+| Field      | Type | Null | Key | Default | Extra |
++------------+------+------+-----+---------+-------+
+| id         | int  | NO   | PRI | NULL    |       |
+| team1Score | int  | NO   |     | NULL    |       |
+| team2Score | int  | NO   |     | NULL    |       |
++------------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT into gamescores (id, team1Score, team2Score)
+    -> values (1, 3, 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DESC  roundstats;  
++---------------------+-------------+------+-----+---------+-------+
+| Field               | Type        | Null | Key | Default | Extra |
++---------------------+-------------+------+-----+---------+-------+
+| id                  | int         | NO   | PRI | NULL    |       |
+| numShutouts         | int         | NO   |     | NULL    |       |
+| goalLeaderId        | varchar(16) | NO   |     | NULL    |       |
+| assistLeaderId      | varchar(16) | NO   |     | NULL    |       |
+| penaltyLeaderld     | varchar(16) | NO   |     | NULL    |       |
+| plusMinusId         | int         | NO   |     | NULL    |       |
+| faceOffsWonLeaderId | int         | NO   |     | NULL    |       |
+| sogLeaderId         | int         | NO   |     | NULL    |       |
++---------------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> 
+mysql> INSERT into  roundstats (id, numShutouts, goalLeaderId, assistLeaderId, penaltyLeaderId, plusMinusId,  faceOffsWonLeaderId, sogLeaderId)
+    -> values (1, 2, 12, 13, 16, 5, 14, 22);
+ERROR 1054 (42S22): Unknown column 'penaltyLeaderId' in 'field list'
+mysql> INSERT into  roundstats (id, numShutouts, goalLeaderId, assistLeaderId, penaltyLeaderld, plusMinusId,  faceOffsWonLeaderId, sogLeaderId)
+    -> values (1, 2, 12, 13, 16, 5, 14, 22);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DESC  userstatspicks
+    -> DESC  userstatspicks;
+;
+^C
+mysql> DESC  userstatspicks;
++---------------------+-------------+------+-----+---------+-------+
+| Field               | Type        | Null | Key | Default | Extra |
++---------------------+-------------+------+-----+---------+-------+
+| id                  | int         | NO   |     | NULL    |       |
+| round1              | int         | NO   |     | NULL    |       |
+| goalLeaderId        | varchar(16) | NO   |     | NULL    |       |
+| assistLeaderId      | varchar(16) | NO   |     | NULL    |       |
+| penaltyLeaderId     | varchar(16) | NO   |     | NULL    |       |
+| plusMinusId         | int         | NO   |     | NULL    |       |
+| faceOffsWonLeaderId | int         | NO   |     | NULL    |       |
+| sogLeaderId         | int         | NO   |     | NULL    |       |
+| numShutouts         | int         | NO   |     | NULL    |       |
+| userId              | int         | NO   |     | NULL    |       |
++---------------------+-------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT into userstatspicks (id, round1, goalLeaderId, assistLeaderId,penaltyLeaderId,  plusMinusId, faceOffsWonLeaderId, sogLeaderId, numShutouts, userId1)
+    -> values (3, 3, 15, 11, 17, 6, 12, 25, 5, 2);
+ERROR 1054 (42S22): Unknown column 'userId1' in 'field list'
+mysql> INSERT into userstatspicks (id, round1, goalLeaderId, assistLeaderId,penaltyLeaderId,  plusMinusId, faceOffsWonLeaderId, sogLeaderId, numShutouts, userId)
+    -> values (3, 3, 15, 11, 17, 6, 12, 25, 5, 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DESC  user;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id       | int         | NO   | PRI | NULL    |       |
+| username | varchar(40) | NO   |     | NULL    |       |
+| password | varchar(35) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> INSERT into  user (id, username, password)
+    -> values (2, 'jgraham', 'password2006');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> 
+mysql> DESC  userscorepicks;
++--------------+------+------+-----+---------+-------+
+| Field        | Type | Null | Key | Default | Extra |
++--------------+------+------+-----+---------+-------+
+| id           | int  | NO   | PRI | NULL    |       |
+| hockeyGameId | int  | NO   |     | NULL    |       |
+| team1IdScore | int  | NO   |     | NULL    |       |
+| team2IdScore | int  | NO   |     | NULL    |       |
+| userId       | int  | NO   |     | NULL    |       |
++--------------+------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> 
+mysql> INSERT INTO  userscorepicks  (id, hockeyGameId, team1IdScore, team2IdScore, userId)
+    -> values (3, 4, 3, 1, 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DESC hockeyteam; 
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | NO   | PRI | NULL    |       |
+| name  | varchar(27) | NO   |     | NULL    |       |
+| logo  | varchar(40) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT into hockeyteam  (id, name, logo)
+    -> values(1, 'Team Carolina', 'logoc.png');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DESC hockeyteamplayer;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| id           | int         | NO   |     | NULL    |       |
+| hockeyTeamId | int         | NO   |     | NULL    |       |
+| firstName    | varchar(20) | NO   |     | NULL    |       |
+| lastName     | varchar(25) | NO   |     | NULL    |       |
+| jerseyNum    | int         | NO   |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT into hockeyteamplayer (id, hockeyTeamId, firstName, lastName, jerseyNum)
+    -> values (1, 3, 'Seth Jarvis', 'William portador', +12, 'Jacob Slavin');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> 
+mysql> INSERT into hockeyteamplayer (id, hockeyTeamId, firstName, lastName, jerseyNum)
+    -> values (1, 3, 'Seth Jarvis', 'William portador', 99, 'Slavin');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT into hockeyteamplayer (id, hockeyTeamId, firstName, lastName, jerseyNum)
+    -> values (3, 3, 'Jarvis', 'William', 99, 'Slavin');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> DESC  hockeyteamplayer;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| id           | int         | NO   |     | NULL    |       |
+| hockeyTeamId | int         | NO   |     | NULL    |       |
+| firstName    | varchar(20) | NO   |     | NULL    |       |
+| lastName     | varchar(25) | NO   |     | NULL    |       |
+| jerseyNum    | int         | NO   |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+mysql> INSERT into hockeyteamplayer (id, hockeyTeamId, firstName, lastName, jerseyNum)
+    -> values (3, 3, 'Jarvis', 'William', 99,);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')
+' at line 2
+mysql> 
+mysql> 
+mysql> INSERT into hockeyteamplayer (id, hockeyTeamId, firstName, lastName, jerseyNum)
+    -> values (3, 3, 'Jarvis', 'William', 99);
+Query OK, 1 row affected (0.00 sec)
+mysql> DESC userinfo;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| id           | int         | NO   | PRI | NULL    |       |
+| firstName    | varchar(20) | NO   |     | NULL    |       |
+| lastName     | varchar(25) | NO   |     | NULL    |       |
+| email        | varchar(45) | NO   |     | NULL    |       |
+| round1Points | int         | NO   |     | NULL    |       |
+| round2Points | int         | NO   |     | NULL    |       |
+| round3Points | int         | NO   |     | NULL    |       |
+| round4Points | int         | NO   |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+mysql> INSERT into userinfo (id, firstName, lastName, email, round1Points, round2Points, round3Points, round4Points)
+    -> values (1, 'Jacob Slavin', 'William portador', 'William.portador@example.com', 20, 26, 32, 38);
+Query OK, 1 row affected (0.00 sec)
