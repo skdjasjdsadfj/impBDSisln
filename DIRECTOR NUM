@@ -62,3 +62,175 @@ mysql> CREATE TABLE `Tabla_Customer2`  (
     ->     PRIMARY KEY (Customer_ID)
     -> );
 Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO `Tabla_Customer2` (`Customer_ID`, `Celular`, `Trabajo`, `Hogar`) 
+    -> SELECT
+    -> `Customer ID`,
+    ->     MAX(CASE WHEN `type phone` = 'Celular' THEN `number` END) AS `Celular`,
+    ->     MAX(CASE WHEN `type phone` = 'Trabajo' THEN `number` END) AS `Trabajo`,
+    ->     MAX(CASE WHEN `type phone` = 'Hogar' THEN `number` END) AS `Hogar`
+    -> FROM
+    -> `Tabla_CustomerID`
+    -> GROUP BY
+    ->    `Customer ID`;
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+CREATE TABLE `Desarrollo`(
+    ->     `Proceso` VARCHAR(20),
+    ->     `Fase` INT,
+    ->     `Realizado` DATE
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+INSERT INTO `Desarrollo` (`Proceso`, `Fase`, `Realizado`) VALUES
+    -> ('ResCAP1', 1, '2025-01-01'),
+    -> ('ResCAP1', 2, '2025-02-01'),
+    -> ('ResCAP1', 3, '2053-03-01'),
+    -> ('AMP', 1, '2025-01-01'),
+    -> ('AMP', 2, NULL),
+    -> ('AMP', 3, NULL);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+SELECT DISTINCT `Proceso`
+    -> FROM `Desarrollo`
+    -> WHERE `Realizado` IS NULL;
++---------+
+| Proceso |
++---------+
+| AMP     |
++---------+
+1 row in set (0.01 sec)
+
+mysql> show tables;
++-----------------------------------+
+| Tables_in_R0s1t4Fres1t4$ximenaItz |
++-----------------------------------+
+| Desarrollo                        |
+| Tabla_Customer2                   |
+| Tabla_CustomerID                  |
++-----------------------------------+
+3 rows in set (0.01 sec)
+mysql> CREATE TABLE `Fundamentos` (
+    ->     `Detalle` VARCHAR(20) NOT NULL
+    -> 
+    -> fhf
+fhf
+    -> CREATE TABLE `Fundamentos` (
+    ->     `Detalle` VARCHAR(20) NOT NULL
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+ near 'fhf
+CREATE TABLE `Fundamentos` (
+    `Detalle` VARCHAR(20) NOT NULL
+)' at line 4
+mysql> CREATE TABLE `Fundamentos` (
+    ->     `Detalle` VARCHAR(20) NOT NULL
+CREATE TABLE `Fundamentos` (
+    `Detalle` VARCHAR(20) NOT NULL
+)' at line 4
+mysql> CREATE TABLE `Fundamentos` (
+    ->     `Detalle` VARCHAR(20) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+mysql> INSERT INTO `Fundamentos` (`Detalle`) VALUES
+    -> ('Geólogo'),
+    -> ('Astrónomo'),
+    -> ('Bioquímico');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> CREATE TABLE `Aspirantes` (
+    ->     `Id_Aspirante` INT NOT NULL,
+    ->     `Detalle` VARCHAR(20) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+mysql> INSERT INTO `Aspirantes` (`Id_Aspirante`, `Detalle`) VALUES
+    -> (1001, 'Geólogo'),
+    -> (1001, 'Astrónomo'),
+    -> (1001, 'Bioquímico'),
+    -> (2002, 'Técnico'),
+    -> (2002, 'Cirujano'),
+    -> (2002, 'Mecánico'),
+    -> (3003, 'Geólogo'),
+    -> (3003, 'Astrónomo'),
+    -> (4004, 'Ingeniero');
+Query OK, 9 rows affected (0.00 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+mysql> SELECT Id_Aspirante
+    -> FROM `Aspirantes`
+    -> WHERE `Detalle` IN (SELECT `Detalle` FROM `Fundamentos`)
+    -> GROUP BY Id_Aspirante
+    -> HAVING COUNT(DISTINCT `Detalle`) = (SELECT COUNT(*) FROM `Fundamentos`);
++--------------+
+| Id_Aspirante |
++--------------+
+|         1001 |
++--------------+
+1 row in set (0.00 sec)
+mysql> SELECT * FROM Tabla_CustomerID;
++-------------+------------+--------------+
+| Customer ID | type phone | number       |
++-------------+------------+--------------+
+|           1 | Celular    | 33-6879-1234 |
+|           2 | Hogar      | 33-6583-6742 |
+|           3 | Trabajo    | 33-9058-7694 |
+|           1 | Celular    | 33-0987-6853 |
+|           2 | Hogar      | 33-2348-6822 |
++-------------+------------+--------------+
+5 rows in set (0.00 sec)
+mysql> SELECT * FROM Tabla_Customer2;
++-------------+--------------+--------------+--------------+
+| Customer_ID | Celular      | Trabajo      | Hogar        |
++-------------+--------------+--------------+--------------+
+|           1 | 33-6879-1234 | NULL         | NULL         |
+|           2 | NULL         | NULL         | 33-6583-6742 |
+|           3 | NULL         | 33-9058-7694 | NULL         |
++-------------+--------------+--------------+--------------+
+3 rows in set (0.00 sec)
+mysql> SELECT * FROM Desarrollo;
++---------+------+------------+
+| Proceso | Fase | Realizado  |
++---------+------+------------+
+| ResCAP1 |    1 | 2025-01-01 |
+| ResCAP1 |    2 | 2025-02-01 |
+| ResCAP1 |    3 | 2053-03-01 |
+| AMP     |    1 | 2025-01-01 |
+| AMP     |    2 | NULL       |
+| AMP     |    3 | NULL       |
++---------+------+------------+
+6 rows in set (0.00 sec)
+mysql> SELECT * FROM Fundamentos;
++-------------+
+| Detalle     |
++-------------+
+| Geólogo     |
+| Astrónomo   |
+| Bioquímico  |
++-------------+
+3 rows in set (0.00 sec)
+mysql> SELECT * FROM Aspirantes;
++--------------+-------------+
+| Id_Aspirante | Detalle     |
++--------------+-------------+
+|         1001 | Geólogo     |
+|         1001 | Astrónomo   |
+|         1001 | Bioquímico  |
+|         2002 | Técnico     |
+|         2002 | Cirujano    |
+|         2002 | Mecánico    |
+|         3003 | Geólogo     |
+|         3003 | Astrónomo   |
+|         4004 | Ingeniero   |
++--------------+-------------+
+9 rows in set (0.01 sec)
+mysql> show tables;
++-----------------------------------+
+| Tables_in_R0s1t4Fres1t4$ximenaItz |
++-----------------------------------+
+| Aspirantes                        |
+| Desarrollo                        |
+| Fundamentos                       |
+| Tabla_Customer2                   |
+| Tabla_CustomerID                  |
++-----------------------------------+
+5 rows in set (0.00 sec)
