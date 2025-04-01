@@ -1,0 +1,142 @@
+mysql> CREATE TABLE Flujosdetrabajo (
+    -> Flujo VARCHAR(50),
+    -> Caso1 INT,
+    -> Caso2 INT,
+    -> Caso3 INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+mysql> INSERT INTO Flujosdetrabajo (Flujo, Caso1, Caso2, Caso3) VALUES
+    -> ('Alta de usuario', 0, 0, 0),
+    -> ('Baja de usuario', 0, 1, 1),
+    -> ('Nueva orden', 1, 0, 0),
+    -> ('Eliminar la orden', 0, 0, 0);
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> SELECT
+    -> Flujo,
+    -> (Caso1 + Caso2 + Caso3) AS Aprobado
+    -> FROM Flujosdetrabajo;
++-------------------+----------+
+| Flujo             | Aprobado |
++-------------------+----------+
+| Alta de usuario   |        0 |
+| Baja de usuario   |        2 |
+| Nueva orden       |        1 |
+| Eliminar la orden |        0 |
++-------------------+----------+
+4 rows in set (0.00 sec)
+mysql> SELECT * TABLE Flujosdetrabajo;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syn
+tax to use near 'TABLE Flujosdetrabajo' at line 1
+mysql>  SELECT * FROM Flujosdetrabajo;
++-------------------+-------+-------+-------+
+| Flujo             | Caso1 | Caso2 | Caso3 |
++-------------------+-------+-------+-------+
+| Alta de usuario   |     0 |     0 |     0 |
+| Baja de usuario   |     0 |     1 |     1 |
+| Nueva orden       |     1 |     0 |     0 |
+| Eliminar la orden |     0 |     0 |     0 |
++-------------------+-------+-------+-------+
+4 rows in set (0.00 sec)
+
+ysql> CREATE TABLE Licencias00 (
+    -> empleado INT,
+    -> licencia VARCHAR(10)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO Licencias00 (empleado, licencia) VALUES
+    -> (1001, 'Tipo A'),
+    -> (1001, 'Tipo B'),
+    -> (1001, 'Tipo C'),
+    -> (2002, 'Tipo A'),
+    -> (2002, 'Tipo B'),
+    -> (2002, 'Tipo C'),
+    -> (3003, 'Tipo A'),
+    -> (3003, 'Tipo D'),
+    -> (4004, 'Tipo A'),
+    -> (4004, 'Tipo B'),
+    -> (4004, 'Tipo D'),
+    -> (5005, 'Tipo A'),
+    -> (5005, 'Tipo B'),
+    -> (5005, 'Tipo D');
+Query OK, 14 rows affected (0.01 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> SELECT * FROM Licencias00;
++----------+----------+
+| empleado | licencia |
++----------+----------+
+|     1001 | Tipo A   |
+|     1001 | Tipo B   |
+|     1001 | Tipo C   |
+|     2002 | Tipo A   |
+|     2002 | Tipo B   |
+|     2002 | Tipo C   |
+|     3003 | Tipo A   |
+|     3003 | Tipo D   |
+|     4004 | Tipo A   |
+|     4004 | Tipo B   |
+|     4004 | Tipo D   |
+|     5005 | Tipo A   |
+|     5005 | Tipo B   |
+|     5005 | Tipo D   |
++----------+----------+
+14 rows in set (0.01 sec)
+mysql> SELECT a.empleado AS empleado1, b.empleado AS empleado2, COUNT(*) AS Coincidencias
+    -> FROM Licencias00 a
+    -> JOIN Licencias00 b ON a.licencia = b.licencia AND a.empleado != b.empleado
+    -> GROUP BY a.empleado, b.empleado
+    -> HAVING COUNT(*) = (SELECT COUNT(*) FROM Licencias00 c WHERE c.empleado = a.empleado)
+    -> AND COUNT(*) = (SELECT COUNT(*) FROM Licencias00 d WHERE d.empleado = b.empleado);
++-----------+-----------+---------------+
+| empleado1 | empleado2 | Coincidencias |
++-----------+-----------+---------------+
+|      2002 |      1001 |             3 |
+|      1001 |      2002 |             3 |
+|      5005 |      4004 |             3 |
+|      4004 |      5005 |             3 |
++-----------+-----------+---------------+
+4 rows in set (0.00 sec)
+
+
+mysql> CREATE TABLE Numeross (
+    -> Entero INT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO Numeross(Entero) VALUES
+    -> (5), (6), (10), (10), (13), (14), (17), (20), (81), (90), (76);
+Query OK, 11 rows affected (0.01 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+mysql> SELECT
+    ->     (SELECT AVG(entero) FROM Numeross) AS Media,
+    ->     (SELECT Entero
+    ->      FROM Numeross
+    ->      GROUP BY Entero
+    ->      ORDER BY COUNT(Entero) DESC, Entero ASC
+    ->      LIMIT 1) AS Moda,
+    ->     (SELECT MAX(Entero) - MIN(Entero) FROM Numeross) AS Rango;
++---------+------+-------+
+| Media   | Moda | Rango |
++---------+------+-------+
+| 31.0909 |   10 |    85 |
++---------+------+-------+
+1 row in set (0.00 sec)
+mysql> SELECT * FROM  Numeross;
++--------+
+| Entero |
++--------+
+|      5 |
+|      6 |
+|     10 |
+|     10 |
+|     13 |
+|     14 |
+|     17 |
+|     20 |
+|     81 |
+|     90 |
+|     76 |
++--------+
+11 rows in set (0.00 sec)
+mysql> 
