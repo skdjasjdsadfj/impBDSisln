@@ -1,0 +1,160 @@
+mysql> CREATE TABLE Casosprueba (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> casos VARCHAR(10) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO Casosprueba (casos)
+    -> VALUES ('A'), ('B'), ('C');
+
+mysql> SELECT * FROM Casosprueba;
++----+-------+
+| id | casos |
++----+-------+
+|  1 | A     |
+|  2 | B     |
+|  3 | C     |
++----+-------+
+3 rows in set (0.01 sec)
+
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+WITH RECURSIVE Permutaciones (Perm, Restantes) AS (
+    -> SELECT
+    -> casos AS Perm,
+    -> REPLACE(
+    -> (SELECT GROUP_CONCAT(casos ORDER BY casos SEPARATOR ',')
+    -> FROM Casosprueba ),
+    -> casos,
+    -> ''
+    -> ) AS Restantes
+    -> FROM Casosprueba 
+    -> 
+    -> UNION ALL
+    -> 
+    -> SELECT
+    -> CONCAT_WS(',', p.Perm, c.casos) AS Perm,
+    -> REPLACE(p.Restantes, c.casos, '') AS Restantes
+    -> FROM Permutaciones p
+    -> JOIN Casosprueba c
+    -> ON LOCATE(c.casos, p.Restantes) > 0
+    -> )
+    -> SELECT Perm AS Permutacion
+    -> FROM Permutaciones
+    -> WHERE LENGTH(REPLACE(Perm, ',', '')) = (
+    -> SELECT SUM(LENGTH(casos))
+    -> FROM Casosprueba 
+    -> )
+    -> ORDER BY Perm;
++-------------+
+| Permutacion |
++-------------+
+| A,B,C       |
+| A,C,B       |
+| B,A,C       |
+| B,C,A       |
+| C,A,B       |
+| C,B,A       |
++-------------+
+6 rows in set (0.00 sec)
+
+
+mysql> CREATE TABLE Iteracionesdeflujo (
+    ->     Desarrollo VARCHAR(20),
+    ->     Terminacion DATE
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Iteracionesdeflujo (Desarrollo, Terminacion)
+    -> VALUES
+    -> ('RestAPI', '2024-06-01'),
+    -> ('RestAPI', '2024-06-14'),
+    -> ('RestAPI', '2024-06-15'),
+    -> ('Web', '2024-06-01'),
+    -> ('Web', '2024-06-02'),
+    -> ('Web', '2024-06-19'),
+    -> ('App', '2024-06-01'),
+    -> ('App', '2024-06-15'),
+    -> ('App', '2024-06-30');
+Query OK, 9 rows affected (0.01 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+mysql> WITH cte AS (
+    -> SELECT
+    -> Desarrollo,
+    -> Terminacion,
+    -> LAG(Terminacion) OVER (PARTITION BY Desarrollo ORDER BY Terminacion) AS TerminacionP
+    -> FROM Iteracionesdeflujo 
+    -> )
+    -> SELECT
+    -> Desarrollo,
+    -> AVG(DATEDIFF(Terminacion, TerminacionP)) AS Promedio
+    -> FROM cte
+    -> WHERE TerminacionP IS NOT NULL
+    -> GROUP BY Desarrollo;
++------------+----------+
+| Desarrollo | Promedio |
++------------+----------+
+| App        |  14.5000 |
+| RestAPI    |   7.0000 |
+| Web        |   9.0000 |
++------------+----------+
+3 rows in set (0.00 sec)
+mysql> SELECT * FROM Iteracionesdeflujo;
++------------+-------------+
+| Desarrollo | Terminacion |
++------------+-------------+
+| RestAPI    | 2024-06-01  |
+| RestAPI    | 2024-06-14  |
+| RestAPI    | 2024-06-15  |
+| Web        | 2024-06-01  |
+| Web        | 2024-06-02  |
+| Web        | 2024-06-19  |
+| App        | 2024-06-01  |
+| App        | 2024-06-15  |
+| App        | 2024-06-30  |
++------------+-------------+
+9 rows in set (0.00 sec)
+
+ CREATE TABLE SEGinventario (
+    -> Fecha DATE PRIMARY KEY,
+    -> Ajuste INT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO SEGinventario (Fecha, Ajuste) VALUES
+    -> ('2025-01-03', 100),
+    -> ('2025-01-04', 75),
+    -> ('2025-01-05', -150),
+    -> ('2025-01-06', 50),
+    -> ('2025-01-07', -70);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+ELECT
+Fecha,
+Ajuste,
+SUM(Ajuste) OVER (ORDER BY Fecha) AS SEGinventario
+FROM ' at line 1
+mysql> SELECT
+    -> Fecha,
+    -> Ajuste,
+    -> SUM(Ajuste) OVER (ORDER BY Fecha) AS Inventario
+    -> FROM SEGinventario;
++------------+--------+------------+
+| Fecha      | Ajuste | Inventario |
++------------+--------+------------+
+| 2025-01-03 |    100 |        100 |
+| 2025-01-04 |     75 |        175 |
+| 2025-01-05 |   -150 |         25 |
+| 2025-01-06 |     50 |         75 |
+| 2025-01-07 |    -70 |          5 |
++------------+--------+------------+
+5 rows in set (0.00 sec)
+mysql> SELECT * FROM SEGinventario;
++------------+--------+
+| Fecha      | Ajuste |
++------------+--------+
+| 2025-01-03 |    100 |
+| 2025-01-04 |     75 |
+| 2025-01-05 |   -150 |
+| 2025-01-06 |     50 |
+| 2025-01-07 |    -70 |
++------------+--------+
+5 rows in set (0.00 sec)
