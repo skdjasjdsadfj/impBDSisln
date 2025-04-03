@@ -1,0 +1,146 @@
+mysql> CREATE TABLE Procesos (
+    -> Flujo VARCHAR(50),
+    -> Paso INT,
+    -> Estado VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Procesos (Flujo, Paso, Estado) VALUES
+    -> ('Alpha', 1, 'Error'),
+    -> ('Alpha', 2, 'Finalizado'),
+    -> ('Alpha', 3, 'Corriendo'),
+    -> ('Bravo', 1, 'Finalizado'),
+    -> ('Bravo', 2, 'Finalizado'),
+    -> ('Charlie', 1, 'Corriendo'),
+    -> ('Charlie', 2, 'Corriendo'),
+    -> ('Delta', 1, 'Error'),
+    -> ('Delta', 2, 'Error'),
+    -> ('Echo', 1, 'Corriendo'),
+    -> ('Echo', 2, 'Finalizado');
+Query OK, 11 rows affected (0.01 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> SELECT Flujo,
+    -> CASE
+    -> WHEN COUNT(DISTINCT Estado) = 1 THEN MAX(Estado) 
+    -> WHEN SUM(Estado = 'Error') > 0
+    -> AND (SUM(Estado = 'Finalizado') > 0 OR SUM(Estado = 'Corriendo') > 0) THEN 'Indeterminado'
+    -> WHEN SUM(Estado = 'Finalizado') > 0 AND SUM(Estado = 'Corriendo') > 0 THEN 'Corriendo'
+    -> ELSE 'Indeterminado' 
+    -> END AS Estado
+    -> FROM Procesos
+    -> GROUP BY Flujo;
++---------+---------------+
+| Flujo   | Estado        |
++---------+---------------+
+| Alpha   | Indeterminado |
+| Bravo   | Finalizado    |
+| Charlie | Corriendo     |
+| Delta   | Error         |
+| Echo    | Corriendo     |
++---------+---------------+
+5 rows in set (0.00 sec)
+mysql> SELECT * FROM;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syn
+tax to use near '' at line 1
+mysql> SELECT * FROM Procesos;
++---------+------+------------+
+| Flujo   | Paso | Estado     |
++---------+------+------------+
+| Alpha   |    1 | Error      |
+| Alpha   |    2 | Finalizado |
+| Alpha   |    3 | Corriendo  |
+| Bravo   |    1 | Finalizado |
+| Bravo   |    2 | Finalizado |
+| Charlie |    1 | Corriendo  |
+| Charlie |    2 | Corriendo  |
+| Delta   |    1 | Error      |
+| Delta   |    2 | Error      |
+| Echo    |    1 | Corriendo  |
+| Echo    |    2 | Finalizado |
++---------+------+------------+
+11 rows in set (0.00 sec)
+
+
+mysql> CREATE TABLE SQL_SINTAxis (
+    -> Secuencias INT,
+    -> Sintaxis VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+mysql> 
+mysql> INSERT INTO SQL_SINTAxis (Secuencias, Sintaxis) VALUES
+    -> (1, 'SELECT'),
+    -> (2, 'Producto,'),
+    -> (3, 'Precio,'),
+    -> (4, 'Disponibilidad,'),
+    -> (5, 'FROM'),
+    -> (6, 'Productos'),
+    -> (7, 'WHERE'),
+    -> (8, 'Precio'),
+    -> (9, '>100');
+Query OK, 9 rows affected (0.01 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+mysql> SELECT GROUP_CONCAT(Sintaxis SEPARATOR ' ') AS Sintaxis
+    -> FROM SQL_SINTAxis
+    -> ORDER BY Secuencias;
++---------------------------------------------------------------------------+
+| Sintaxis                                                                  |
++---------------------------------------------------------------------------+
+| SELECT Producto, Precio, Disponibilidad, FROM Productos WHERE Precio >100 |
++---------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+mysql> SELECT *FROM SQL_SINTAxis;
++------------+-----------------+
+| Secuencias | Sintaxis        |
++------------+-----------------+
+|          1 | SELECT          |
+|          2 | Producto,       |
+|          3 | Precio,         |
+|          4 | Disponibilidad, |
+|          5 | FROM            |
+|          6 | Productos       |
+|          7 | WHERE           |
+|          8 | Precio          |
+|          9 | >100            |
++------------+-----------------+
+9 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Marcadoreees ( 
+    ->     Jugador1 INT, 
+    ->     Jugador2 INT,
+    ->      marcador INT );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Marcadoreees (Jugador1, Jugador2, marcador)
+    ->  VALUES (1001, 2002, 150), (3003, 4004, 15), (4004, 3003, 125);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> SELECT 
+    ->     CASE 
+    ->   WHEN Jugador1 < Jugador2 THEN Jugador1 
+    ->   ELSE Jugador2 
+    ->   END AS Jugador_1,
+    ->     CASE 
+    ->   WHEN Jugador1 > Jugador2 THEN Jugador1 
+    ->   ELSE Jugador2 
+    ->   END AS Jugador_2, 
+    ->   SUM(marcador) AS marcador 
+    ->   FROM  Marcadoreees 
+    ->   GROUP BY Jugador_1, Jugador_2;
++-----------+-----------+----------+
+| Jugador_1 | Jugador_2 | marcador |
++-----------+-----------+----------+
+|      1001 |      2002 |      150 |
+|      3003 |      4004 |      140 |
++-----------+-----------+----------+
+2 rows in set (0.00 sec)
+mysql> SELECT * FROM  Marcadoreees;
++----------+----------+----------+
+| Jugador1 | Jugador2 | marcador |
++----------+----------+----------+
+|     1001 |     2002 |      150 |
+|     3003 |     4004 |       15 |
+|     4004 |     3003 |      125 |
++----------+----------+----------+
+3 rows in set (0.00 sec)
