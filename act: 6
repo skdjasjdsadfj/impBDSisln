@@ -1,0 +1,40 @@
+mysql> CREATE TABLE PRODUCTOS (
+    ->     Producto VARCHAR(50),
+    ->     Cantidad INT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO PRODUCTOS  (Producto, Cantidad) VALUES
+    -> ('Lápiz', 3),
+    -> ('Borrador', 4),
+    -> ('Cuaderno', 2);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> SELECT * FROM PRODUCTOS;
++----------+----------+
+| Producto | Cantidad |
++----------+----------+
+| Lápiz    |        3 |
+| Borrador |        4 |
+| Cuaderno |        2 |
++----------+----------+
+3 rows in set (0.01 sec)
+mysql> SELECT Producto, 1 AS Cantidad
+    -> FROM PRODUCTOS 
+    -> JOIN (SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) AS nums
+    -> ON nums.n <= PRODUCTOS.Cantidad;
++----------+----------+
+| Producto | Cantidad |
++----------+----------+
+| Cuaderno |        1 |
+| Borrador |        1 |
+| Lápiz    |        1 |
+| Cuaderno |        1 |
+| Borrador |        1 |
+| Lápiz    |        1 |
+| Borrador |        1 |
+| Lápiz    |        1 |
+| Borrador |        1 |
++----------+----------+
+9 rows in set (0.01 sec)
+mysql> 
