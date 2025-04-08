@@ -1,0 +1,179 @@
+mysql> CREATE TABLE PRODUCTOS (
+    ->     Producto VARCHAR(50),
+    ->     Cantidad INT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO PRODUCTOS  (Producto, Cantidad) VALUES
+    -> ('Lápiz', 3),
+    -> ('Borrador', 4),
+    -> ('Cuaderno', 2);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> SELECT * FROM PRODUCTOS;
++----------+----------+
+| Producto | Cantidad |
++----------+----------+
+| Lápiz    |        3 |
+| Borrador |        4 |
+| Cuaderno |        2 |
++----------+----------+
+3 rows in set (0.01 sec)
+mysql> SELECT Producto, 1 AS Cantidad
+    -> FROM PRODUCTOS 
+    -> JOIN (SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) AS nums
+    -> ON nums.n <= PRODUCTOS.Cantidad;
++----------+----------+
+| Producto | Cantidad |
++----------+----------+
+| Cuaderno |        1 |
+| Borrador |        1 |
+| Lápiz    |        1 |
+| Cuaderno |        1 |
+| Borrador |        1 |
+| Lápiz    |        1 |
+| Borrador |        1 |
+| Lápiz    |        1 |
+| Borrador |        1 |
++----------+----------+
+9 rows in set (0.01 sec)
+mysql> 
+
+
+mysql> CREATE TABLE Asientos (
+    ->     numasiento INTEGER
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Asientos ( numasiento) VALUES
+    -> (7), (13), (14), (15),
+    -> (27), (28), (29), (30),
+    -> (31), (32), (33), (34), (35),
+    -> (52), (53), (54);
+Query OK, 16 rows affected (0.00 sec)
+Records: 16  Duplicates: 0  Warnings: 0
+
+mysql> 
+
+
+mysql> WITH RECURSIVE Numeros AS (
+    ->     SELECT 1 AS n
+    ->     UNION ALL
+    ->     SELECT n + 1 FROM Numeros WHERE n + 1 <= 54
+    -> ),
+    -> libres AS (
+    ->     SELECT n AS espacio
+    ->     FROM Numeros
+    ->     WHERE n NOT IN (SELECT  numasiento FROM Asientos)
+    -> ),
+    -> agrupados AS (
+    ->     SELECT 
+    ->         espacio,
+    ->         espacio - ROW_NUMBER() OVER (ORDER BY espacio) AS grupo
+    ->     FROM libres
+    -> )
+    -> SELECT 
+    ->     MIN(espacio) AS espacioinicio,
+    ->     MAX(espacio) AS espaciofinal
+    -> FROM agrupados
+    -> GROUP BY grupo
+    -> ORDER BY espacioinicio;
++---------------+--------------+
+| espacioinicio | espaciofinal |
++---------------+--------------+
+|             1 |            6 |
+|             8 |           12 |
+|            16 |           26 |
+|            36 |           51 |
++---------------+--------------+
+4 rows in set (0.00 sec)
+mysql> 
+mysql> WITH RECURSIVE Numeros AS (
+    ->     SELECT 1 AS n
+    ->     UNION ALL
+    ->     SELECT n + 1 FROM Numeros WHERE n + 1 <= 54
+    -> )
+    -> SELECT COUNT(*) AS disponibles
+    -> FROM Numeros
+    -> WHERE n NOT IN (SELECT  numasiento FROM Asientos);
++-------------+
+| disponibles |
++-------------+
+|          38 |
++-------------+
+1 row in set (0.00 sec)
+mysql> 
+mysql> SELECT 
+    ->     CASE WHEN MOD( numasiento, 2) = 0 THEN 'pares' ELSE 'impares' END AS tipo,
+    ->     COUNT(*) AS total
+    -> FROM Asientos
+    -> GROUP BY tipo;
++---------+-------+
+| tipo    | total |
++---------+-------+
+| impares |     9 |
+| pares   |     7 |
++---------+-------+
+2 rows in set (0.00 sec)
+
+
+mysql> CREATE TABLE Periodos_00 (
+    ->     Inicio DATE,
+    ->     Final DATE
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> 
+mysql> INSERT INTO Periodos_00 (Inicio, Final)
+    -> VALUES 
+    ->     ('2025-01-01', '2025-01-05'),
+    ->     ('2025-01-03', '2025-01-09'),
+    ->     ('2025-01-10', '2025-01-11'),
+    ->     ('2025-01-12', '2025-01-16'),
+    ->     ('2025-01-15', '2025-01-19');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+mysql> WITH Ordenado AS (
+    ->     SELECT 
+    ->         *,
+    ->         LAG(Final) OVER (ORDER BY Inicio) AS FinalAnterior,
+    ->         LAG(Inicio) OVER (ORDER BY Inicio) AS InicioAnterior
+    ->     FROM Periodos_00
+    -> ),
+    -> Marcado AS (
+    ->     SELECT *,
+    ->         CASE 
+    ->             WHEN FinalAnterior IS NULL OR Inicio > FinalAnterior THEN 1
+    ->             ELSE 0
+    ->         END AS NuevoGrupo
+    ->     FROM Ordenado
+    -> ),
+    -> Grupos AS (
+    ->     SELECT *,
+    ->         SUM(NuevoGrupo) OVER (ORDER BY Inicio ROWS UNBOUNDED PRECEDING) AS Grupo
+    ->     FROM Marcado
+    -> )
+    -> SELECT 
+    ->     MIN(Inicio) AS Inicio, 
+    ->     MAX(Final) AS Final
+    -> FROM Grupos
+    -> GROUP BY Grupo
+    -> ORDER BY Inicio;
++------------+------------+
+| Inicio     | Final      |
++------------+------------+
+| 2025-01-01 | 2025-01-09 |
+| 2025-01-10 | 2025-01-11 |
+| 2025-01-12 | 2025-01-19 |
++------------+------------+
+3 rows in set (0.00 sec)
+mysql> SELECT * FROM Periodos_00;
++------------+------------+
+| Inicio     | Final      |
++------------+------------+
+| 2025-01-01 | 2025-01-05 |
+| 2025-01-03 | 2025-01-09 |
+| 2025-01-10 | 2025-01-11 |
+| 2025-01-12 | 2025-01-16 |
+| 2025-01-15 | 2025-01-19 |
++------------+------------+
+5 rows in set (0.00 sec)
