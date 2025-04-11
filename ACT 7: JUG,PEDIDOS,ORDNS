@@ -1,3 +1,106 @@
+mysql> CREATE TABLE Jugadores (
+    ->     jugador INT,
+    ->     Marcador INT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+mysql> 
+mysql> INSERT INTO Jugadores (jugador, Marcador)
+    -> VALUES
+    ->     (1001, 2343),
+mysql> INSERT INTO Jugadores (jugador, Marcador)
+    ->     (2002, 9432),
+    ->     (3003, 6548),
+    ->     (4004, 1054),
+    ->     (5005, 6832);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> SELECT
+    ->     CASE
+    ->         WHEN RANK() OVER (ORDER BY Marcador DESC) <= (SELECT COUNT(*) / 2 FROM Jugadores)
+    ->         THEN 1
+    ->         ELSE 2
+    ->     END AS Categoria,
+    ->     jugador,
+    ->     Marcador
+    -> FROM Jugadores
+    -> ORDER BY Categoria, Marcador DESC;
++-----------+---------+----------+
+| Categoria | jugador | Marcador |
++-----------+---------+----------+
+|         1 |    2002 |     9432 |
+|         1 |    5005 |     6832 |
+|         2 |    3003 |     6548 |
+|         2 |    1001 |     2343 |
+|         2 |    4004 |     1054 |
++-----------+---------+----------+
+5 rows in set (0.01 sec)
+mysql> SELECT * FROM Jugadores;
++---------+----------+
+| jugador | Marcador |
++---------+----------+
+|    1001 |     2343 |
+|    2002 |     9432 |
+|    3003 |     6548 |
+|    4004 |     1054 |
+|    5005 |     6832 |
++---------+----------+
+5 rows in set (0.00 sec)
+
+
+mysql> INSERT INTO Pedidos (Orden, Cliente, Fecha, Cantidad, Estado)
+    -> VALUES
+    ->     (1, 1001, '2025-01-01', 100, 'JAL'),
+    ->     (2, 3003, '2025-01-01', 100, 'COL'),
+    ->     (3, 1001, '2025-01-03', 100, 'JAL'),
+    ->     (4, 2002, '2025-01-02', 150, 'JAL'),
+    ->     (5, 1001, '2025-01-02', 100, 'JAL'),
+    ->     (6, 4004, '2025-01-05', 50, 'COL'),
+    ->     (7, 1001, '2025-01-01', 150, 'JAL'),
+    ->     (8, 3003, '2025-01-03', 100, 'COL'),
+    ->     (9, 4004, '2025-01-04', 100, 'COL'),
+    ->     (10, 1001, '2025-01-01', 75, 'JAL'),
+    ->     (11, 2002, '2025-01-02', 75, 'JAL'),
+    ->     (12, 3003, '2025-02-02', 100, 'COL'),
+    ->     (13, 4004, '2025-01-05', 100, 'COL');
+Query OK, 13 rows affected (0.01 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+mysql> SELECT *
+    -> FROM Pedidos
+    -> ORDER BY Orden
+    -> LIMIT 5 OFFSET 4;
++-------+---------+------------+----------+--------+
+| Orden | Cliente | Fecha      | Cantidad | Estado |
++-------+---------+------------+----------+--------+
+|     5 |    1001 | 2025-01-02 |      100 | JAL    |
+|     6 |    4004 | 2025-01-05 |       50 | COL    |
+|     7 |    1001 | 2025-01-01 |      150 | JAL    |
+|     8 |    3003 | 2025-01-03 |      100 | COL    |
+|     9 |    4004 | 2025-01-04 |      100 | COL    |
++-------+---------+------------+----------+--------+
+5 rows in set (0.00 sec)
+mysql> SELECT * FROM Pedidos;
++-------+---------+------------+----------+--------+
+| Orden | Cliente | Fecha      | Cantidad | Estado |
++-------+---------+------------+----------+--------+
+|     1 |    1001 | 2025-01-01 |      100 | JAL    |
+|     2 |    3003 | 2025-01-01 |      100 | COL    |
+|     3 |    1001 | 2025-01-03 |      100 | JAL    |
+|     4 |    2002 | 2025-01-02 |      150 | JAL    |
+|     5 |    1001 | 2025-01-02 |      100 | JAL    |
+|     6 |    4004 | 2025-01-05 |       50 | COL    |
+|     7 |    1001 | 2025-01-01 |      150 | JAL    |
+|     8 |    3003 | 2025-01-03 |      100 | COL    |
+|     9 |    4004 | 2025-01-04 |      100 | COL    |
+|    10 |    1001 | 2025-01-01 |       75 | JAL    |
+|    11 |    2002 | 2025-01-02 |       75 | JAL    |
+|    12 |    3003 | 2025-02-02 |      100 | COL    |
+|    13 |    4004 | 2025-01-05 |      100 | COL    |
++-------+---------+------------+----------+--------+
+13 rows in set (0.00 sec)
+
 
 
 mysql> CREATE TABLE Ordenes (
