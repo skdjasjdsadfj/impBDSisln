@@ -1,0 +1,167 @@
+
+mysql> CREATE TABLE Ordenes (
+    -> Orden INT,
+    -> Cliente INT,
+    -> Cantidad INT,
+    -> Proveedor VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+mysql> 
+mysql> INSERT INTO Ordenes (Orden, Cliente, Cantidad, Proveedor) VALUES
+    -> (1, 1001, 12, 'IBM'),
+    -> (2, 1001, 54, 'IBM'),
+    -> (3, 1001, 32, 'Amazon'),
+    -> (4, 2002, 7, 'Amazon'),
+    -> (5, 2002, 16, 'Amazon'),
+    -> (6, 2002, 5, 'IBM');
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> 
+mysql> SELECT Cliente, Proveedor
+    -> FROM (
+    -> SELECT
+    -> Cliente,
+    -> Proveedor,
+    -> SUM(Cantidad) AS Total,
+    -> ROW_NUMBER() OVER (PARTITION BY Cliente ORDER BY SUM(Cantidad) DESC) AS rnk
+    -> FROM Ordenes
+    -> GROUP BY Cliente, Proveedor
+    -> ) AS sub
++---------+-----------+
+    -> WHERE rnk = 1;
++---------+-----------+
+| Cliente | Proveedor |
++---------+-----------+
+|    1001 | IBM       |
+|    2002 | Amazon    |
++---------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Ordenes;
++-------+---------+----------+-----------+
+| Orden | Cliente | Cantidad | Proveedor |
++-------+---------+----------+-----------+
+|     1 |    1001 |       12 | IBM       |
+|     2 |    1001 |       54 | IBM       |
+|     3 |    1001 |       32 | Amazon    |
+|     4 |    2002 |        7 | Amazon    |
+|     5 |    2002 |       16 | Amazon    |
+|     6 |    2002 |        5 | IBM       |
++-------+---------+----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> CREATE TABLE VVentas (
+    -> Orden INT,
+    -> Cliente INT,
+    -> Fecha DATE,
+    -> Total DECIMAL(10, 2),
+    -> Estado VARCHAR(10)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO VVentas (Orden, Cliente, Fecha, Total, Estado) VALUES
+    -> (1, 1001, '2025-01-01', 100, 'JAL'),
+    -> (2, 1001, '2025-01-01', 150, 'JAL'),
+    -> (3, 1001, '2025-01-01', 75, 'JAL'),
+    -> (4, 1001, '2025-02-01', 100, 'JAL'),
+    -> (5, 1001, '2025-03-01', 100, 'JAL'),
+    -> (6, 2002, '2025-02-01', 75, 'JAL'),
+    -> (7, 2002, '2025-02-01', 150, 'JAL'),
+    -> (8, 3003, '2025-01-01', 100, 'CDMX'),
+    -> (9, 3003, '2025-02-01', 100, 'CDMX'),
+    -> (10, 3003, '2025-03-01', 100, 'CDMX'),
+    -> (11, 4004, '2025-04-01', 100, 'CDMX'),
+    -> (12, 4004, '2025-05-01', 50, 'CDMX'),
+    -> (13, 4004, '2025-05-01', 100, 'CDMX');
+Query OK, 13 rows affected (0.01 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> 
+mysql> SELECT Estado
+    -> FROM (
+    -> SELECT Estado, Cliente, DATE_FORMAT(Fecha, '%Y-%m') AS Mes, AVG(Total) AS Promensual
+    -> FROM VVentas
+    -> GROUP BY Estado, Cliente, Mes
+    -> ) AS Pro_mensual
+    -> GROUP BY Estado, Cliente
+    -> HAVING MIN(Promensual) > 100;
++--------+
+| Estado |
++--------+
+| JAL    |
++--------+
+1 row in set (0.00 sec)
+mysql> SELECT * FROM VVentas;
++-------+---------+------------+--------+--------+
+| Orden | Cliente | Fecha      | Total  | Estado |
++-------+---------+------------+--------+--------+
+|     1 |    1001 | 2025-01-01 | 100.00 | JAL    |
+|     2 |    1001 | 2025-01-01 | 150.00 | JAL    |
+|     3 |    1001 | 2025-01-01 |  75.00 | JAL    |
+|     4 |    1001 | 2025-02-01 | 100.00 | JAL    |
+|     5 |    1001 | 2025-03-01 | 100.00 | JAL    |
+|     6 |    2002 | 2025-02-01 |  75.00 | JAL    |
+|     7 |    2002 | 2025-02-01 | 150.00 | JAL    |
+|     8 |    3003 | 2025-01-01 | 100.00 | CDMX   |
+|     9 |    3003 | 2025-02-01 | 100.00 | CDMX   |
+|    10 |    3003 | 2025-03-01 | 100.00 | CDMX   |
+|    11 |    4004 | 2025-04-01 | 100.00 | CDMX   |
+|    12 |    4004 | 2025-05-01 |  50.00 | CDMX   |
+|    13 |    4004 | 2025-05-01 | 100.00 | CDMX   |
++-------+---------+------------+--------+--------+
+13 rows in set (0.00 sec)
+mysql> CREATE TABLE Logs (
+    -> Proceso VARCHAR(20),
+    -> Mensaje VARCHAR(100),
+    -> Ocurrencia INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Logs (Proceso, Mensaje, Ocurrencia) VALUES
+    -> ('Web', 'Error: No se puede dividir por 0', 3),
+    -> ('RestAPI', 'Error: Fallo la conversión', 5),
+    -> ('App', 'Error: Fallo la conversión', 7),
+    -> ('App', 'Error: Fallo la conversión', 7),
+    -> ('RestAPI', 'Error: Error sin identificar', 9),
+    -> ('Web', 'Error: Error sin identificar', 1),
+    -> ('App', 'Error: Error sin identificar', 10),
+    -> ('Web', 'Estado Completado', 8),
+    -> ('RestAPI', 'Estado Completado', 6);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+mysql> 
+mysql> 
+mysql> SELECT Proceso, Mensaje, Ocurrencia
+    -> FROM Logs l
+    -> WHERE (Mensaje, Ocurrencia) IN (
+    -> SELECT Mensaje, MAX(Ocurrencia)
+    -> FROM Logs
+    -> GROUP BY Mensaje
+    -> );
++---------+----------------------------------+------------+
+| Proceso | Mensaje                          | Ocurrencia |
++---------+----------------------------------+------------+
+| Web     | Error: No se puede dividir por 0 |          3 |
+| App     | Error: Fallo la conversión       |          7 |
+| App     | Error: Error sin identificar     |         10 |
+| Web     | Estado Completado                |          8 |
++---------+----------------------------------+------------+
+4 rows in set (0.00 sec)
+mysql> SELECT * TABLE Logs;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'T
+ABLE Logs' at line 1
+mysql> SELECT * FROM Logs;
++---------+----------------------------------+------------+
+| Proceso | Mensaje                          | Ocurrencia |
++---------+----------------------------------+------------+
+| Web     | Error: No se puede dividir por 0 |          3 |
+| RestAPI | Error: Fallo la conversión       |          5 |
+| App     | Error: Fallo la conversión       |          7 |
+| RestAPI | Error: Error sin identificar     |          9 |
+| Web     | Error: Error sin identificar     |          1 |
+| App     | Error: Error sin identificar     |         10 |
+| Web     | Estado Completado                |          8 |
+| RestAPI | Estado Completado                |          6 |
++---------+----------------------------------+------------+
+8 rows in set (0.00 sec)
