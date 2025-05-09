@@ -18,7 +18,7 @@ mysql> show tables;
 | Tables_in_R0s1t4Fres1t4$ximenaItz |
 +-----------------------------------+
 | Tabla_CustomerID                  |
-+-----------------------------------+
++-----------------------------------+ 
 1 row in set (0.01 sec)
 
 mysql> INSERT INTO `Tabla_CustomerID` (`Customer ID`, `type phone`, `Number`) VALUES
