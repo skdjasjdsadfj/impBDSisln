@@ -1,0 +1,79 @@
+mysql> CREATE TABLE Sampleda (
+    -> Integervalue INTEGER PRIMARY KEY
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Sampleda VALUES (3759), (3760), (3761), (3762), (3763);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> SELECT MAX(Integervalue) AS Secondhighest
+    -> FROM Sampleda
+    -> WHERE Integervalue < (
+    -> SELECT MAX(Integervalue)
+    -> FROM Sampleda
+    -> );
++---------------+
+| Secondhighest |
++---------------+
+|          3762 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> SELECT * FROM Sampleda;
++--------------+
+| Integervalue |
++--------------+
+|         3759 |
+|         3760 |
+|         3761 |
+|         3762 |
+|         3763 |
++--------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Employees (
+    -> Name VARCHAR(100),
+    -> Salary INT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Employees (Name, Salary) VALUES
+    -> ('Ayumi Arenas', 250000),
+    -> ('Saul Hernandez', 250000),
+    -> ('Alan Luna', 150000),
+    -> ('Victor Sanchez', 150000),
+    -> ('Jose Solis', 100000),
+    -> ('Keysha Garcia', 100000);
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> SELECT DISTINCT Salary
+    -> FROM Employees
+    -> ORDER BY Salary DESC
+    -> LIMIT 1 OFFSET 1;
++--------+
+| Salary |
++--------+
+| 150000 |
++--------+
+1 row in set (0.00 sec)
+mysql> SELECT * FROM Employee;
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$LOpezramos.Employee' doesn't exist
+mysql> SELECT * FROM Employees;
++----------------+--------+
+| Name           | Salary |
++----------------+--------+
+| Ayumi Arenas   | 250000 |
+| Saul Hernandez | 250000 |
+| Alan Luna      | 150000 |
+| Victor Sanchez | 150000 |
+| Jose Solis     | 100000 |
+| Keysha Garcia  | 100000 |
++----------------+--------+
+6 rows in set (0.00 sec)

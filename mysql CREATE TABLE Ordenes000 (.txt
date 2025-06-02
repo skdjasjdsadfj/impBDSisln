@@ -1,0 +1,83 @@
+mysql> CREATE TABLE Ordenes000 (
+    -> Id INT PRIMARY KEY,
+    -> Producto VARCHAR(50),
+    -> Dias_para_entregar INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Manufactura (
+    -> Producto VARCHAR(50),
+    -> Componente VARCHAR(50),
+    -> Dias_de_manufactura INT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Ordenes000 (Id, Producto, Dias_para_entregar) VALUES
+    -> (1, 'Amanecer', 7),
+    -> (2, 'Atardecer', 3),
+    -> (3, 'Anochecer', 9);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Manufactura (Producto, Componente, Dias_de_manufactura) VALUES
+    -> ('Amanecer', 'Photon Coil', 2),
+    -> ('Amanecer', 'Filamento', 2),
+    -> ('Amanecer', 'Capacitor', 2),
+    -> ('Amanecer', 'Esfera', 1), -- Total: 7
+    -> 
+    -> ('Atardecer', 'Photon Coil', 3),
+    -> ('Atardecer', 'Filamento', 4), -- Total: 7
+    -> 
+    -> ('Anochecer', 'Capacitor', 1),
+    -> ('Anochecer', 'Photon Coil', 2); -- Total: 3
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> SELECT
+    -> o.Id,
+    -> o.Producto,
+    -> SUM(m.Dias_de_manufactura) AS Dias_para_armar,
+    -> o.Dias_para_entregar,
+    -> CASE
+    -> WHEN SUM(m.Dias_de_manufactura) = o.Dias_para_entregar THEN 'Listo'
+    -> WHEN SUM(m.Dias_de_manufactura) < o.Dias_para_entregar THEN 'Muy rápido'
+    -> ELSE 'Retrasado'
+    -> END AS Calendario
+    -> FROM Ordenes000 o
+    -> JOIN Manufactura m ON o.Producto = m.Producto
+    -> GROUP BY o.Id, o.Producto, o.Dias_para_entregar;
++----+-----------+-----------------+--------------------+-------------+
+| Id | Producto  | Dias_para_armar | Dias_para_entregar | Calendario  |
++----+-----------+-----------------+--------------------+-------------+
+|  1 | Amanecer  |               7 |                  7 | Listo       |
+|  2 | Atardecer |               7 |                  3 | Retrasado   |
+|  3 | Anochecer |               3 |                  9 | Muy rápido  |
++----+-----------+-----------------+--------------------+-------------+
+3 rows in set (0.01 sec)
+mysql>  SELECT * FROM Ordenes;
+ERROR 1146 (42S02): Table 'R0s1t4Fres1t4$LOpezramos.Ordenes' doesn't exist
+mysql>  SELECT * FROM Ordenes000;
++----+-----------+--------------------+
+| Id | Producto  | Dias_para_entregar |
++----+-----------+--------------------+
+|  1 | Amanecer  |                  7 |
+|  2 | Atardecer |                  3 |
+|  3 | Anochecer |                  9 |
++----+-----------+--------------------+
+3 rows in set (0.00 sec)
+mysql>  SELECT * FROM Manufactura;
++-----------+-------------+---------------------+
+| Producto  | Componente  | Dias_de_manufactura |
++-----------+-------------+---------------------+
+| Amanecer  | Photon Coil |                   2 |
+| Amanecer  | Filamento   |                   2 |
+| Amanecer  | Capacitor   |                   2 |
+| Amanecer  | Esfera      |                   1 |
+| Atardecer | Photon Coil |                   3 |
+| Atardecer | Filamento   |                   4 |
+| Anochecer | Capacitor   |                   1 |
+| Anochecer | Photon Coil |                   2 |
++-----------+-------------+---------------------+
+8 rows in set (0.00 sec)
